@@ -7,27 +7,30 @@
     <style>
         body {
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f7e6d5;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             font-family: 'Comic Sans MS', cursive, sans-serif;
+            position: relative;
         }
 
         /* Container pai para alinhar os gatos lado a lado */
         .container-pai {
             display: flex;
+            flex-wrap: wrap;       /* permite quebra de linha em telas pequenas */
+            justify-content: center;
             gap: 20px;
-            z-index: 10; /* fica acima das flores */
+            z-index: 10;           /* fica acima das flores */
         }
 
         /* Containers dos gatos */
         .cat-container {
-            width: 300px;
-            height: 420px;
-            text-align: center;
+            width: 90%;            /* largura adaptativa para mobile */
+            max-width: 300px;      /* largura máxima */
+            height: auto;          /* altura se adapta ao conteúdo */
             border: 5px solid #d2691e;
             border-radius: 20px;
             padding: 20px;
@@ -35,9 +38,13 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
             transition: transform 0.3s;
             box-sizing: border-box;
+
+            /* Flex para centralizar vertical e horizontalmente */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center; 
+            align-items: center;     
+            gap: 10px; /* espaço entre imagem e texto */
         }
 
         .cat-container:hover {
@@ -45,17 +52,20 @@
         }
 
         .cat-container img {
-            max-width: 100%;
-            max-height: 250px;
+            width: 80%;           
+            max-width: 250px;
+            height: auto;         
             border-radius: 50%;
             border: 3px solid #d2691e;
             object-fit: cover;
+            display: block; /* garante centralização no flex */
         }
 
         .cat-container p {
-            font-size: 20px;
+            font-size: clamp(16px, 2vw, 20px); /* fonte adaptativa */
             color: #8b4513;
             margin: 0;
+            text-align: center;
         }
 
         /* Partículas de flores */
@@ -77,6 +87,17 @@
             100% {
                 transform: translateY(-500px) rotate(720deg);
                 opacity: 0;
+            }
+        }
+
+        /* Ajustes extras para telas muito pequenas */
+        @media (max-width: 500px) {
+            .cat-container img {
+                width: 70%;
+                max-width: 200px;
+            }
+            .cat-container p {
+                font-size: 16px;
             }
         }
     </style>
@@ -104,7 +125,7 @@
             setTimeout(() => flor.remove(), 5000);
         }
 
-        // Explosão inicial
+        // Explosão inicial de flores
         for(let i = 0; i < 20; i++) {
             setTimeout(criarFlor, i * 200);
         }
