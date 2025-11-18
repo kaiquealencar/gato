@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página dos Gatos</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #f7e6d5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        /* Container pai para alinhar os gatos lado a lado */
+        .container-pai {
+            display: flex;
+            gap: 20px;
+            z-index: 10; /* fica acima das flores */
+        }
+
+        /* Containers dos gatos */
+        .cat-container {
+            width: 300px;
+            height: 420px;
+            text-align: center;
+            border: 5px solid #d2691e;
+            border-radius: 20px;
+            padding: 20px;
+            background-color: #fff8f0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cat-container:hover {
+            transform: scale(1.05);
+        }
+
+        .cat-container img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 50%;
+            border: 3px solid #d2691e;
+            object-fit: cover;
+        }
+
+        .cat-container p {
+            font-size: 20px;
+            color: #8b4513;
+            margin: 0;
+        }
+
+        /* Partículas de flores */
+        .flower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('https://i.ibb.co/0jmv5fY/flower.png');
+            background-size: cover;
+            pointer-events: none;
+            animation: float 3s linear forwards;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-pai">
+        <div class="cat-container">
+            <img src="{{ url_for('static', filename='img/01.jpg') }}" alt="Gato Amarelo">
+            <p>Olá! Eu sou o Amarelo 🐱</p>
+        </div>
+        <div class="cat-container">
+            <img src="{{ url_for('static', filename='img/02.jpg') }}" alt="Gato Prin">
+            <p>Olá! Eu sou a Prin 🐱</p>
+        </div>
+    </div>
+
+    <script>
+        function criarFlor() {
+            const flor = document.createElement('div');
+            flor.classList.add('flower');
+            flor.style.left = Math.random() * window.innerWidth + 'px';
+            flor.style.top = window.innerHeight + 'px';
+            flor.style.animationDuration = (2 + Math.random() * 3) + 's';
+            document.body.appendChild(flor);
+            setTimeout(() => flor.remove(), 5000);
+        }
+
+        // Explosão inicial
+        for(let i = 0; i < 20; i++) {
+            setTimeout(criarFlor, i * 200);
+        }
+
+        // Criação contínua de flores
+        setInterval(criarFlor, 2000);
+    </script>
+</body>
+</html>
