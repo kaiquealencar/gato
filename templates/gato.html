@@ -1,137 +1,181 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página dos Gatos</title>
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background-color: #f7e6d5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            position: relative;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página dos Gatos</title>
 
-        /* Container pai para alinhar os gatos lado a lado */
-        .container-pai {
-            display: flex;
-            flex-wrap: wrap;       /* permite quebra de linha em telas pequenas */
-            justify-content: center;
-            gap: 20px;
-            z-index: 10;           /* fica acima das flores */
-        }
+<!-- FONTE DE FORMA CORRETA -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* Containers dos gatos */
-        .cat-container {
-            width: 90%;            /* largura adaptativa para mobile */
-            max-width: 300px;      /* largura máxima */
-            height: auto;          /* altura se adapta ao conteúdo */
-            border: 5px solid #d2691e;
-            border-radius: 20px;
-            padding: 20px;
-            background-color: #fff8f0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
-            box-sizing: border-box;
+<style> 
 
-            /* Flex para centralizar vertical e horizontalmente */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;     
-            gap: 10px; /* espaço entre imagem e texto */
-        }
+/* BODY CORRIGIDO */
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+    box-sizing: border-box;
 
-        .cat-container:hover {
-            transform: scale(1.05);
-        }
+    /* FONTE */
+    font-family: "Poppins", Arial, sans-serif;
 
-        .cat-container img {
-            width: 80%;           
-            max-width: 250px;
-            height: auto;         
-            border-radius: 50%;
-            border: 3px solid #d2691e;
-            object-fit: cover;
-            display: block; /* garante centralização no flex */
-        }
+    /* FUNDO */
+    background-image: url("{{ url_for('static', filename='img/bg.png') }}");
+    background-repeat: repeat;
+    background-size: 180px;
+}
 
-        .cat-container p {
-            font-size: clamp(16px, 2vw, 20px); /* fonte adaptativa */
-            color: #8b4513;
-            margin: 0;
-            text-align: center;
-        }
+/* CARDS */
+.card { 
+    width: 200px;
+    height: 330px;
+    perspective: 1200px;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transform-style: preserve-3d;
+    contain: layout paint style;
+    overflow: hidden;
+}
 
-        /* Partículas de flores */
-        .flower {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-image: url('https://i.ibb.co/0jmv5fY/flower.png');
-            background-size: cover;
-            pointer-events: none;
-            animation: float 3s linear forwards;
-        }
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 15px;
 
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-500px) rotate(720deg);
-                opacity: 0;
-            }
-        }
+}
 
-        /* Ajustes extras para telas muito pequenas */
-        @media (max-width: 500px) {
-            .cat-container img {
-                width: 70%;
-                max-width: 200px;
-            }
-            .cat-container p {
-                font-size: 16px;
-            }
-        }
-    </style>
+.inner-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.card.flipped .inner-card {
+    transform: rotateY(180deg);
+}
+
+.front, .back {
+    border: 3px solid #ffb347;
+    outline: 4px solid #fff3d4;
+    outline-offset: -6px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover .front,
+.card:hover .back {
+    box-shadow: 0 12px 20px rgba(0,0,0,0.35);
+}
+
+.front{
+  display: flex;
+  flex-direction: column;
+}
+
+.front img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    display: block;
+}
+
+.card.flipped .front img {
+    transform: scale(1.05);
+}
+.caption{
+  height: 20%;       
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    background-color: #fff3d4;
+    border-top: 2px solid #ffb347;
+    box-sizing: border-box;
+    padding: 5px;
+    font-weight: 600;
+}
+
+.back {
+    background-color: #ffe4b5;
+    color: #333;
+    display: flex;
+    justify-content: center;   
+    align-items: center;      
+    text-align: center;
+    padding: 15px;
+    transform: rotateY(180deg);
+    font-size: 14px;
+    height: 100%;              
+    width: 100%;               
+    box-sizing: border-box;
+}
+
+/* RESPOSIVO */
+@media (max-width: 600px) {
+    .card {
+        width: 150px;
+        height: 200px;
+        flex: 1 1 150px;
+    }
+}
+
+@media (max-width: 400px) {
+    .card {
+        width: 120px;
+        height: 160px;
+        flex: 1 1 120px;
+    }
+}
+</style>
 </head>
+
 <body>
-    <div class="container-pai">
-        <div class="cat-container">
-            <img src="{{ url_for('static', filename='img/01.jpg') }}" alt="Gato Amarelo">
-            <p>Olá! Eu sou o Amarelo 🐱</p>
-        </div>
-        <div class="cat-container">
-            <img src="{{ url_for('static', filename='img/02.jpg') }}" alt="Gato Prin">
-            <p>Olá! Eu sou a Prin 🐱</p>
-        </div>
+
+<!-- Card do Gato Amarelo -->
+<div class="card" onclick="this.classList.toggle('flipped')">
+  <div class="inner-card">
+    <div class="front">
+      <img src="{{ url_for('static', filename='img/01.jpg') }}" alt="Gato Amarelo">
+      <div class="caption">Sou o Amarelo 🐱</div>
     </div>
+    <div class="back">
+      Oi, eu sou o Amarelo. Gosto muito de brincar, amo sachê e churu. 
+      Adoro ficar no colo, principalmente do meu pai. Sou muito sociável
+      e um pouco bagunceiro.
+    </div>
+  </div>
+</div>
 
-    <script>
-        function criarFlor() {
-            const flor = document.createElement('div');
-            flor.classList.add('flower');
-            flor.style.left = Math.random() * window.innerWidth + 'px';
-            flor.style.top = window.innerHeight + 'px';
-            flor.style.animationDuration = (2 + Math.random() * 3) + 's';
-            document.body.appendChild(flor);
-            setTimeout(() => flor.remove(), 5000);
-        }
+<!-- Card da Gata Clarice -->
+<div class="card" onclick="this.classList.toggle('flipped')">
+  <div class="inner-card">
+    <div class="front">
+      <img src="{{ url_for('static', filename='img/02.jpg') }}" alt="Gata Clarice">
+      <div class="caption">Sou a Prin 🐱👑</div>
+    </div>
+    <div class="back">
+      Oi, eu sou a Clarice, também conhecida como Prin (de princesa). Sou uma lady, educada,
+      amo estar na companhia do meu pai e da minha mãe, adoro dormir com ela. Sou uma gata 
+      muito limpa, tomo vários banhos por dia. Adoro minha paz!
+    </div>
+  </div>
+</div>
 
-        // Explosão inicial de flores
-        for(let i = 0; i < 20; i++) {
-            setTimeout(criarFlor, i * 200);
-        }
-
-        // Criação contínua de flores
-        setInterval(criarFlor, 2000);
-    </script>
 </body>
 </html>
